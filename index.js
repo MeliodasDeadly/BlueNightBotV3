@@ -1,8 +1,8 @@
 const Discord = require("discord.js");
 const config = require(`./botconfig/config.json`);
+const Cconfig = require('../botconfig/channel.json')
 const settings = require(`./botconfig/settings.json`);
 const colors = require("colors");
-const guild = client.guilds.cache.get(config.guildid);
 const client = new Discord.Client({
     //fetchAllMembers: false,
     //restTimeOffset: 0,
@@ -44,6 +44,8 @@ client.cooldowns = new Discord.Collection();
 client.slashCommands = new Discord.Collection();
 client.aliases = new Discord.Collection();
 client.categories = require("fs").readdirSync(`./commands`);
+const guild = client.guilds.cache.get(config.guildid);
+
 //Require the Handlers                  Add the antiCrash file too, if its enabled
 ["events", "commands", "slashCommands", settings.antiCrash ? "antiCrash" : null]
     .filter(Boolean)
