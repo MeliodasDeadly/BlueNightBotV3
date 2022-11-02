@@ -15,6 +15,12 @@
                 "Folder": "Admin",
                 "CmdName": "admin",
                 "CmdDescription": "Administrate the Server!"
+        },
+        {
+                "Folder": "Request",
+                "CmdName": "request",
+                "CmdDescription": "Request something!"
+
         }
    ]
 }
