@@ -1,12 +1,16 @@
 const { Client, Partials, Collection, GatewayIntentBits } = require('discord.js');
+
 const config = require('./config/config');
 const colors = require("colors");
 
 const Toolbox = require('./class/Tools');
+const {JsonDB, Config} = require("node-json-db");
 
 const tools = new Toolbox();
 
 global.tools = tools;
+
+
 
 // Creating a new client:
 const client = new Client({
@@ -42,6 +46,8 @@ if (!AuthenticationToken) {
     return process.exit();
 }
 
+// DB
+client.db = new JsonDB(new Config("/db.json", true, true, '/'));
 
 // Handler:
 client.slash_commands = new Collection();
@@ -68,3 +74,4 @@ process.on('unhandledRejection', async (err, promise) => {
     tools.logger("[CRASH] Unhandled Rejection with error: " + err, "error");
     console.error(promise);
 });
+
