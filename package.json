@@ -7,7 +7,7 @@
     "start": "node index.js"
   },
   "keywords": [],
-  "author": "Benjy",
+  "author": "Melio",
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
