@@ -1,57 +1,22 @@
 const fs = require("fs");
-const allevents = [];
-module.exports = async (client) => {
-    try {
-        try {
-            const stringlength = 69;
-            console.log("\n")
-            console.log(`     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓`.bold.brightGreen)
-            console.log(`     ┃ `.bold.brightGreen + " ".repeat(-1 + stringlength - ` ┃ `.length) + "┃".bold.brightGreen)
-            console.log(`     ┃ `.bold.brightGreen + `Welcome to SERVICE HANDLER!`.bold.brightGreen + " ".repeat(-1 + stringlength - ` ┃ `.length - `Welcome to SERVICE HANDLER!`.length) + "┃".bold.brightGreen)
-            console.log(`     ┃ `.bold.brightGreen + `  /-/ Edited by Meliodouil /-/`.bold.brightGreen + " ".repeat(-1 + stringlength - ` ┃ `.length - `  /-/ Edited by Meliodouil /-/`.length) + "┃".bold.brightGreen)
-            console.log(`     ┃ `.bold.brightGreen + " ".repeat(-1 + stringlength - ` ┃ `.length) + "┃".bold.brightGreen)
-            console.log(`     ┃ `.bold.brightGreen + `  /-/ Discord: Tomato#6966 /-/`.bold.brightGreen + " ".repeat(-1 + stringlength - ` ┃ `.length - `  /-/ By Discord: Tomato#6966 /-/`.length) + "   ┃".bold.brightGreen)
-            console.log(`     ┃ `.bold.brightGreen + " ".repeat(-1 + stringlength - ` ┃ `.length) + "┃".bold.brightGreen)
-            console.log(`     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛`.bold.brightGreen)
-        } catch {
-            /* */ }
-        let amount = 0;
-        const load_dir = (dir) => {
-            const event_files = fs.readdirSync(`./events/${dir}`).filter((file) => file.endsWith(".js"));
-            for (const file of event_files) {
-                try {
-                    const event = require(`../events/${dir}/${file}`)
-                    let eventName = file.split(".")[0];
-                    allevents.push(eventName);
-                    client.on(eventName, event.bind(null, client));
-                    amount++;
-                } catch (e) {
-                    console.log(e)
-                }
-            }
-        }
-        await ["client", "guild"].forEach(e => load_dir(e));
-        console.log(`${amount} Events Loaded`.brightGreen);
-        try {
-            const stringlength2 = 69;
-            console.log("\n")
-            console.log(`     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓`.bold.yellow)
-            console.log(`     ┃ `.bold.yellow + " ".repeat(-1 + stringlength2 - ` ┃ `.length) + "┃".bold.yellow)
-            console.log(`     ┃ `.bold.yellow + `Logging into the BOT...`.bold.yellow + " ".repeat(-1 + stringlength2 - ` ┃ `.length - `Logging into the BOT...`.length) + "┃".bold.yellow)
-            console.log(`     ┃ `.bold.yellow + " ".repeat(-1 + stringlength2 - ` ┃ `.length) + "┃".bold.yellow)
-            console.log(`     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛`.bold.yellow)
-        } catch {
-            /* */ }
-    } catch (e) {
-        console.log(String(e.stack).bgRed)
-    }
-};
-/**
- * @INFO
- * Bot Coded by Tomato#6966 | https://discord.gg/milrato
- * @INFO
- * Work for Milrato Development | https://milrato.eu
- * @INFO
- * Please mention Him / Milrato Development, when using this Code!
- * @INFO
- */
+const colors = require("colors");
+
+module.exports = (client) => {
+	console.log("0------------------| Events Handler:".blue);
+
+	fs.readdirSync('./events/').forEach(dir => {
+		const commands = fs.readdirSync(`./events/${dir}`).filter(file => file.endsWith('.js'));
+		for (let file of commands) {
+
+			let pull = require(`../events/${dir}/${file}`);
+			if (pull.name) {
+				client.events.set(pull.name, pull);
+				console.log(`[HANDLER - EVENTS] Loaded a file: ${pull.name}`.brightGreen)
+			} else {
+				console.log(`[HANDLER - EVENTS] Couldn't load the file ${file}. missing name or aliases.`.red)
+				continue;
+			}
+
+		}
+	});
+}
