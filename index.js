@@ -16,7 +16,8 @@ const client = new Client({
         GatewayIntentBits.GuildPresences,
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.DirectMessages,
-        GatewayIntentBits.MessageContent
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildBans,
     ],
     partials: [
         Partials.Channel,
@@ -46,7 +47,8 @@ if (!AuthenticationToken) {
 client.slash_commands = new Collection();
 client.cooldowns = new Collection();
 client.events = new Collection();
-
+// var
+client.banRequest = new Collection();
 module.exports = client;
 
 ["application_commands", "events"].forEach((file) => {

@@ -15,9 +15,15 @@ module.exports = {
     alloweduserids: [],
     requiredroles: [],
     run: async (client, interaction, config, db) => {
+        try{
         const { member, channelId, guildId, applicationId, 
             commandName, deferred, replied, ephemeral, 
-            options, id, createdTimestamp 
-    } = interaction; 
+            options, id, createdTimestamp
+        } = interaction;
+
+
+        } catch (e) {
+            console.log(String(e.stack).bgRed)
+        }
     },
 };

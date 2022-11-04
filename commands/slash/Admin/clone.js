@@ -40,7 +40,7 @@ module.exports = {
 
             await channel.clone().then((ch) => {
                 console.log(`Successfully cloned ${channel}`);
-                interaction.reply({ content: `Successfully forceclear ${channel}, this channel will be deleted in 2 seconds.`, ephemeral: true });
+                interaction.reply({ content: `Successfully clonned ${channel}`, ephemeral: true });
             }).catch((err) => {
                 throw `❌: Cant clear ${channel} (Permission Missing)`
             })

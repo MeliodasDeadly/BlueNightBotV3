@@ -99,7 +99,7 @@ module.exports = {
                 }
             ).setColor(EmbedColor ? EmbedColor : "Blurple")
 
-            await user.send({ embeds: [embed] }).catch((err) => {
+            user.send({ embeds: [embed] }).catch((err) => {
                 console.log(`❌: Cant DM ${user.user.tag} (probably disable his DM)`);
             })
             console.log(`✅: Embed Send to ${user.user.tag}, now waiting for the ban... `);
