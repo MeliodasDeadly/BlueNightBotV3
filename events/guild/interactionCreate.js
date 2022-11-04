@@ -1,72 +1,74 @@
-//Import Modules
-const config = require(`../../botconfig/config.json`);
-const ee = require(`../../botconfig/embed.json`);
-const settings = require(`../../botconfig/settings.json`);
-const { onCoolDown, replacemsg } = require("../../handlers/functions");
-const Discord = require("discord.js");
-module.exports = (client, interaction) => {
-	const CategoryName = interaction.commandName;
-	let command = true;
-  let prefix = config.prefix;
-	try{
-    	    if (client.slashCommands.has(CategoryName + interaction.options.getSubcommand())) {
-      		command = client.slashCommands.get(CategoryName + interaction.options.getSubcommand());
-    	    }
-  	}catch{
-    	    if (client.slashCommands.has("normal" + CategoryName)) {
-      		command = client.slashCommands.get("normal" + CategoryName);
-   	    }
-	}
-	if(command) {
-		if (onCoolDown(interaction, command)) {
-			  return interaction.reply({ephemeral: true,
-				embeds: [new Discord.MessageEmbed()
-				  .setColor(ee.wrongcolor)
-				  .setFooter(ee.footertext, ee.footericon)
-				  .setTitle(replacemsg(settings.messages.cooldown, {
-					prefix: prefix,
-					command: command,
-					timeLeft: onCoolDown(interaction, command)
-				  }))]
-			  });
-			}
-		//if Command has specific permission return error
-        if (command.memberpermissions && command.memberpermissions.length > 0 && !interaction.member.permissions.has(command.memberpermissions)) {
-          return interaction.reply({ ephemeral: true, embeds: [new Discord.MessageEmbed()
-              .setColor(ee.wrongcolor)
-              .setFooter(ee.footertext, ee.footericon)
-              .setTitle(replacemsg(settings.messages.notallowed_to_exec_cmd.title))
-              .setDescription(replacemsg(settings.messages.notallowed_to_exec_cmd.description.memberpermissions, {
-                command: command,
-                prefix: prefix
-              }))]
-          });
-        }
-        //if Command has specific needed roles return error
+const { EmbedBuilder } = require("discord.js");
+const client = require("../../index");
+const config = require("../../config/config.js");
+
+module.exports = {
+    name: "interactionCreate"
+};
+
+client.on('interactionCreate', async (interaction) => {
+    if (interaction.isChatInputCommand()) {
+        const command = client.slash_commands.get(interaction.commandName);
+        //console.log(command)
+
+        if (!command) return;
+        tools.createLog(interaction,'1037799729817473034', `__Command Name :__ \n **${command.name}**\n __Command Channel :__ \n**<#${interaction.channel.id}>**`, `<@${interaction.user.id}>`, interaction.user.username, interaction.user.displayAvatarURL());
+
+        try {
+        //    console.log(interaction.options)
+        // make requiredroleid
+
+            const option = interaction?.options?.getSubcommand(false) || false;
+            //console.log(option)
         if (command.requiredroles && command.requiredroles.length > 0 && interaction.member.roles.cache.size > 0 && !interaction.member.roles.cache.some(r => command.requiredroles.includes(r.id))) {
-          return interaction.reply({ ephemeral: true, embeds: [new Discord.MessageEmbed()
-            .setColor(ee.wrongcolor)
-            .setFooter(ee.footertext, ee.footericon)
-            .setTitle(replacemsg(settings.messages.notallowed_to_exec_cmd.title))
-            .setDescription(replacemsg(settings.messages.notallowed_to_exec_cmd.description.requiredroles, {
-              command: command,
-              prefix: prefix
-			}))]
-          })
+                return interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(`❌: You are not allowed to use this command!`)
+                            .setColor('Red')
+                    ],
+                    ephemeral: true
+                })
+            }
+            if(command.alloweduserids.length > 0 && !command.alloweduserids.includes(interaction.member.user.id)){
+                return interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setDescription(`❌: You are not allowed to use this command!`)
+                            .setColor('Red')
+                    ],
+                    ephemeral: true
+                })
+            }
+
+            if (option) {
+                // get the option index from the command
+                const optionIndex = command.options.findIndex((o) => o.name === option);
+
+                if (tools.checkCooldown(interaction, command.options[optionIndex])) {
+                    return interaction.reply({
+                        content: `❌: Please wait for re-use this command \`/${interaction.commandName} ${option}\``,
+                        ephemeral: true
+                    });
+                }
+
+                return await command.run(client, interaction, config);
+            }
+
+            if (tools.checkCooldown(interaction, command)) {
+                return interaction.reply({
+                    content: `❌: Please wait for re-use this command \`/${interaction.commandName}\``,
+                    ephemeral: true
+                });
+            }
+
+
+
+            await command.run(client, interaction, config);
+        } catch (e) {
+            console.error(e)
         }
-        //if Command has specific users return error
-        if (command.alloweduserids && command.alloweduserids.length > 0 && !command.alloweduserids.includes(interaction.member.id)) {
-          return message.channel.send({ ephemeral: true, embeds: [new Discord.MessageEmbed()
-            .setColor(ee.wrongcolor)
-            .setFooter(ee.footertext, ee.footericon)
-            .setTitle(replacemsg(settings.messages.notallowed_to_exec_cmd.title))
-            .setDescription(replacemsg(settings.messages.notallowed_to_exec_cmd.description.alloweduserids, {
-              command: command,
-              prefix: prefix
-            }))]
-          });
-        }
-		//execute the Command
-		command.run(client, interaction, interaction.member, interaction.guild)
-	}
-}
+    }
+
+});
+

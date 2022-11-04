@@ -1,58 +1,68 @@
-const Discord = require("discord.js");
-const config = require(`./botconfig/config.json`);
-const Cconfig = require('../botconfig/channel.json')
-const settings = require(`./botconfig/settings.json`);
+const { Client, Partials, Collection, GatewayIntentBits } = require('discord.js');
+const config = require('./config/config');
 const colors = require("colors");
-const client = new Discord.Client({
-    //fetchAllMembers: false,
-    //restTimeOffset: 0,
-    //restWsBridgetimeout: 100,
-    shards: "auto",
-    allowedMentions: {
-      parse: [ ],
-      repliedUser: false,
-    },
-    partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-    intents: [ 
-        Discord.Intents.FLAGS.GUILDS,
-        Discord.Intents.FLAGS.GUILD_MEMBERS,
-        Discord.Intents.FLAGS.GUILD_BANS,
-        Discord.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-        Discord.Intents.FLAGS.GUILD_INTEGRATIONS,
-        Discord.Intents.FLAGS.GUILD_WEBHOOKS,
-        Discord.Intents.FLAGS.GUILD_INVITES,
-        Discord.Intents.FLAGS.GUILD_VOICE_STATES,
-        Discord.Intents.FLAGS.GUILD_PRESENCES,
-        Discord.Intents.FLAGS.GUILD_MESSAGES,
-        Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        Discord.Intents.FLAGS.GUILD_MESSAGE_TYPING,
-        Discord.Intents.FLAGS.DIRECT_MESSAGES,
-        Discord.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-        Discord.Intents.FLAGS.DIRECT_MESSAGE_TYPING
+
+const Toolbox = require('./class/Tools');
+
+const tools = new Toolbox();
+
+global.tools = tools;
+
+// Creating a new client:
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildPresences,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.MessageContent
+    ],
+    partials: [
+        Partials.Channel,
+        Partials.Message,
+        Partials.User,
+        Partials.GuildMember,
+        Partials.Reaction
     ],
     presence: {
-      activity: {
-        name: `Music`, 
-        type: "LISTENING", 
-      },
-      status: "online"
+        activities: [{
+            name: "BlueNight Bot | https://bluenights.club",
+            type: 0
+        }],
+        status: 'dnd'
     }
 });
-//Define some Global Collections
-client.commands = new Discord.Collection();
-client.cooldowns = new Discord.Collection();
-client.slashCommands = new Discord.Collection();
-client.aliases = new Discord.Collection();
-client.categories = require("fs").readdirSync(`./commands`);
-const guild = client.guilds.cache.get(config.guildid);
 
-//Require the Handlers                  Add the antiCrash file too, if its enabled
-["events", "commands", "slashCommands", settings.antiCrash ? "antiCrash" : null]
-    .filter(Boolean)
-    .forEach(h => {
-        require(`./handlers/${h}`)(client);
-    })
-//Start the Bot
-client.login(config.token)
+// Getting the bot token:
+const AuthenticationToken = process.env.TOKEN || config.Client.TOKEN;
+if (!AuthenticationToken) {
+    tools.logger("[CRASH] Authentication Token for Discord bot is required! Use Envrionment Secrets or config.js.", "error");
+    return process.exit();
+}
 
 
+// Handler:
+client.slash_commands = new Collection();
+client.cooldowns = new Collection();
+client.events = new Collection();
+
+module.exports = client;
+
+["application_commands", "events"].forEach((file) => {
+    require(`./handlers/${file}`)(client, config);
+});
+
+// Login to the bot:
+client.login(AuthenticationToken)
+    .catch((err) => {
+        tools.logger("[CRASH] Something went wrong while connecting to your bot...", "error");
+        tools.logger("[CRASH] Error from Discord API:" + err, "error");
+        return process.exit();
+    });
+
+// Handle errors:
+process.on('unhandledRejection', async (err, promise) => {
+    tools.logger("[CRASH] Unhandled Rejection with error: " + err, "error");
+    console.error(promise);
+});
