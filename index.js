@@ -47,8 +47,9 @@ if (!AuthenticationToken) {
 }
 
 // DB
-client.db = new JsonDB(new Config("/db.json", true, true, '/'));
 
+client.db = new JsonDB(new Config("db.json", true, true, '/', true));
+client.db.load();
 // Handler:
 client.slash_commands = new Collection();
 client.cooldowns = new Collection();
