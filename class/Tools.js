@@ -24,9 +24,71 @@ class Tools {
      * @param {string} text discord text
      * @returns Void
      */
-     createLog(interaction, channelid, text, name, tag, avatar) {
+    createLog(interaction, channelid, text, name, tag, avatar) {
         try {
             const channel = interaction.guild.channels.cache.get(channelid)
+            let color
+            switch (interaction.commandName) {
+                case "ban":
+                    color = parseInt("5f0a08", 16)
+                    break;
+                case "banrequest":
+                    color = parseInt("5f0a08", 16)
+                    break;
+                case "unban":
+                    color = parseInt("5f0a08", 16)
+                    break;
+                case "kick":
+                    color = parseInt("FF0000", 16)
+                    break;
+                case "mute":
+                    color = parseInt("f160e4", 16)
+                    break;
+                case "unmute":
+                    color = parseInt("f160e4", 16)
+                    break;
+                case "warn":
+                    color = parseInt("de0000", 16)
+                    break;
+                case "listwarn":
+                    color = parseInt("de0000", 16)
+                    break;
+                case "warnrequest":
+                    color = parseInt("de0000", 16)
+                    break;
+                case "clear":
+                    color = parseInt("7bf37a", 16)
+                    break;
+                case "forceclear":
+                    color = parseInt("7bf37a", 16)
+                    break;
+                case "slowmode":
+                    color = parseInt("cbef49", 16)
+                    break;
+                case "lock":
+                    color = parseInt("f6989c", 16)
+                    break;
+                case "unlock":
+                    color = parseInt("f6989c", 16)
+                    break;
+                case "embed":
+                    color = parseInt("FFA500", 16)
+                    break;
+                case "say":
+                    color = parseInt("FFA500", 16)
+                    break;
+                case "ping":
+                    color = parseInt("FFA500", 16)
+                    break;
+                case "help":
+                    color = parseInt("FFA500", 16)
+                    break;
+                default:
+                    color = parseInt("373cee", 16)
+                    break;
+
+            }
+
             channel.send({
                 embeds: [
                     new EmbedBuilder({
@@ -36,14 +98,14 @@ class Tools {
                             icon_url: avatar,
                         },
                         description: text,
-                        color: Math.floor(Math.random() * (16777214)) +1,
+                        color: color,
                         timestamp: new Date(),
                         footer: {
                             text: interaction.guild.name,
-                            icon_url: interaction.guild.iconURL({ dynamic: true })
+                            icon_url: interaction.guild.iconURL({dynamic: true})
                         }
 
-                    })  
+                    })
                 ]
             })
         } catch (e) {
@@ -51,7 +113,6 @@ class Tools {
         }
     }
 
-    
 
     /**
      * @desc Get a random color in int

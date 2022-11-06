@@ -3,27 +3,27 @@ const Discord = require("discord.js");
 const Cconfig = require("../../../botconfig/channel.json");
 
 module.exports = {
-    name: "banrequest", // Name of command
-    description: "Request a Ban", // Command description
+    name: "warnrequest", // Name of command
+    description: "Request a Warn", // Command description
     type: 1, // Command type
     options: [
 
         {
             type: 6, // USER (MentionableUser)
             name: "user",
-            description: "User to ban",
+            description: "User to warn",
             required: true
         },
         {
             type: 3, // String
             name: "reason",
-            description: "Reason for ban",
+            description: "Reason for warn",
             required: true
         },
         {
             type: 4, // NUMBER (0 to X)
             name: "force",
-            description: "Force ban user",
+            description: "Force warn user",
             required: true
         }
 
@@ -51,35 +51,11 @@ module.exports = {
 
             const { guild } = member;
 
-
-            const EmbedTitle = "Ban Request";
+            const EmbedTitle = "Warn Request";
             const EmbedDescription = "For: " + `<@${user.id}>` + "\nReason: **" + reason + "**\n Force: " + "**"+force+"**" + "\nRequested by: " + `<@${member.user.id}>`;
             const EmbedColor = "#ff4444";
-            const ChannelOption = Cconfig.banid
+            const ChannelOption = Cconfig.warnid;
             const channel = ChannelOption && ["GUILD_PRIVATE_THREAD ", "GUILD_PUBLIC_THREAD ", "GUILD_NEWS_THREAD ", "GUILD_NEWS", "GUILD_TEXT"].includes(ChannelOption.type) ? ChannelOption : guild.channels.cache.get(ChannelOption);
-            const EmbedTitle2 = "You have been banned !";
-            const EmbedDescription2 = "\nReason: **" + reason + "**\n Force: " + "**"+force+"**" + "\nRequested by: " + `<@${member.user.id}>` + "\nIf you want to get unbaned follow this link : " + config.banlink;
-
-
-            let embed2 = new EmbedBuilder({
-                title:
-                    String(EmbedTitle2).substr(0, 256),
-                description:
-                    String(EmbedDescription2).substr(0, 2048).split("+n+").join("\n"),
-                footer: {
-                    text: guild.name,
-                    icon_url: guild.iconURL({dynamic: true})
-                }
-
-
-            })
-                .setColor(EmbedColor ? EmbedColor : "BLURPLE")
-
-
-
-            // create emoji reaction
-
-
 
 
             let embed = new EmbedBuilder({
@@ -98,11 +74,11 @@ module.exports = {
                 .addComponents(
                     new ButtonBuilder()
                         .setStyle(ButtonStyle.Success)
-                        .setCustomId('banaccept')
+                        .setCustomId('warnaccept')
                         .setLabel('✓'),
                     new ButtonBuilder()
                         .setStyle(ButtonStyle.Danger)
-                        .setCustomId('bandeny')
+                        .setCustomId('warndeny')
                         .setLabel('X'),
                 )
             await channel.send({
@@ -110,7 +86,7 @@ module.exports = {
                 components: [row]
             }).then(
                 message => {
-                    client.banRequest.set(message.id, {
+                    client.warnRequest.set(message.id, {
                         userid: userid,
                         member,
                         reason,

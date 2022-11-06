@@ -22,6 +22,13 @@ const client = new Client({
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildBans,
+        GatewayIntentBits.GuildVoiceStates,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessageTyping,
+        GatewayIntentBits.GuildInvites,
+        GatewayIntentBits.GuildWebhooks,
+        GatewayIntentBits.GuildIntegrations,
+        GatewayIntentBits.GuildMessageTyping,
     ],
     partials: [
         Partials.Channel,
@@ -56,6 +63,9 @@ client.cooldowns = new Collection();
 client.events = new Collection();
 // var
 client.banRequest = new Collection();
+client.warnRequest = new Collection();
+client.kickRequest = new Collection();
+client.muteRequest = new Collection();
 module.exports = client;
 
 ["application_commands", "events"].forEach((file) => {
