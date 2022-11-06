@@ -18,7 +18,7 @@ module.exports = {
 	//INFORMATIONS! You can add Options, but mind that the NAME MUST BE LOWERCASED! AND NO SPACES!!!, for the CHOCIES you need to add a array of arrays; [ ["",""] , ["",""] ] 
 		//{"Integer": { name: "ping_amount", description: "How many times do you want to ping?", required: true }}, //to use in the code: interacton.getInteger("ping_amount")
     {"User": { name: "user", description: "Which user i have to ban ?", required: true }}, //to use in the code: interacton.getUser("ping_a_user")
-    {"StringChoices": { name: "deletetime", description: "How many message did you want to delete ?", required: true, choices: [["5minute", "5min"], ["1day", "1day"], ["1Week", "1week"]] }}, //here the second array input MUST BE A NUMBER // TO USE IN THE CODE: interacton.getInteger("")
+    {"StringChoices": { name: "deletetime", description: "How many Message did you want to delete ?", required: true, choices: [["5minute", "5min"], ["1day", "1day"], ["1Week", "1week"]] }}, //here the second array input MUST BE A NUMBER // TO USE IN THE CODE: interacton.getInteger("")
     {"String": { name: "reason", description: "What is the reason for the ban ?", required: false }}, //to use in the code: interacton.getString("title")
 		//{"String": { name: "description", description: "What should be the Embed Description? [ +n+ = NewLine ]", required: true }}, //to use in the code: interacton.getString("description")
 		//{"String": { name: "color", description: "What should be the Embed Color?", required: false }}, //to use in the code: interacton.getString("color")

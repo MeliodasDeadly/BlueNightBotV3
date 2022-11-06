@@ -16,7 +16,7 @@ module.exports = {
     ], // Command options
     permissions: {
         //DEFAULT_PERMISSIONS: , // Client permissions needed [A FIX !!!!]
-        DEFAULT_MEMBER_PERMISSIONS: PermissionsBitField.Flags.ManageMessages // User permissions needed | Use PermissionsBitField.Flags.
+        DEFAULT_MEMBER_PERMISSIONS: PermissionsBitField.Flags.ManageChannels// User permissions needed | Use PermissionsBitField.Flags.
     },
     cooldown: 5,
     alloweduserids: [],

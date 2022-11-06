@@ -2,7 +2,7 @@ const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
     name: "say", // Name of command
-    description: "Say message with the bot", // Command description
+    description: "Say Message with the bot", // Command description
     type: 1, // Command type
     options: [
         {
@@ -15,14 +15,14 @@ module.exports = {
             // channel
             type: 7,
             name: "channel",
-            description: "Channel to send the message to",
+            description: "Channel to send the Message to",
             required: false
         }
 
     ], // Command options
     permissions: {
         //DEFAULT_PERMISSIONS: , // Client permissions needed [A FIX !!!!]
-        DEFAULT_MEMBER_PERMISSIONS: PermissionsBitField.Flags.ManageGuild // User permissions needed | Use PermissionsBitField.Flags.
+        DEFAULT_MEMBER_PERMISSIONS: PermissionsBitField.Flags.Administrator // User permissions needed | Use PermissionsBitField.Flags.
     },
     cooldown: 5,
     alloweduserids: [],

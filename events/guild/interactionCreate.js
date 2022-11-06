@@ -71,9 +71,61 @@ client.on('interactionCreate', async (interaction) => {
         return await command.run(client, interaction, config);
 
     }
+    if (interaction.isSelectMenu()){
+        const selected = interaction.values.join(', ');
+        let reaction = await client.db.getData('/reactionid/')
+        let reaction2 = await client.db.getData("/reactionid/");
+        reaction2 = reaction2[0].messageId;
+        reaction = reaction.filter(reaction => reaction.guildID === interaction.guild.id)
+        //console.log(interaction.message.id)
+       // console.log(reaction2.id)
+       console.log(reaction2)
+
+        if (selected === reaction.roleId || selected === reaction.roleId2 || selected === reaction.roleId3){
+            let role = interaction.guild.roles.cache.get(selected)
+            let member = interaction.guild.members.cache.get(interaction.user.id)
+            await member.roles.add(role)
+            interaction.reply({content: `✅: You have been added to the role ${role.name}`, ephemeral: true})
+        }
+    }
     if (interaction.isModalSubmit()) {
 
-        // warn
+        // kick
+        if (interaction.customId === "kickmodal") {
+            const kickrequest = client.kickRequest.get(interaction.message?.id);
+            await interaction.message.delete();
+            const reason = interaction.fields.getTextInputValue("kickfield");
+            const EmbedTitle = "Your kick request has been denied";
+            const EmbedDescription = `__By:__  <@${interaction.member.user.id}> \n __Reason:__ **${reason}** \n*If you want to contest this, please contact the head staff.*`;
+            const EmbedColor = "#ff6767";
+
+            let embed = new EmbedBuilder({
+                title: EmbedTitle,
+                description: String(EmbedDescription).substr(0, 2048).split("+n+").join("\n"),
+                footer: {
+                    text: interaction.guild.name,
+                    icon_url: interaction.guild.iconURL()
+                }
+            }).setColor(EmbedColor ? EmbedColor : "Blurple").setTimestamp();
+
+            await kickrequest.member.send({embeds: [embed]}).catch(() => {
+                console.log(`❌: Cant send message to <@${kickrequest.member.user.id}> (Probably disable his DM)`);
+                let embed = new EmbedBuilder()
+                    .setDescription(`<:redcross:1038240381143363585> : Cant send message to <@${kickrequest.member.user.id}> (Probably disable his DM)`)
+                    .setColor('Red')
+                interaction.reply({embeds: [embed], ephemeral: true});
+
+            })
+            interaction.reply({
+                content: `✅: Message sent to : <@${kickrequest.member.user.id}>!`,
+                ephemeral: true
+            });
+            console.log(`✅: Embed Send to ${kickrequest.member.user.tag}`);
+        }
+
+
+
+            // warn
 
         if(interaction.customId === "warnmodal"){
             const warnrequest = client.warnRequest.get(interaction.message?.id);
@@ -147,9 +199,69 @@ client.on('interactionCreate', async (interaction) => {
     if (interaction.isButton()) {
         const banrequest = client.banRequest.get(interaction.message?.id);
         const warnrequest = client.warnRequest.get(interaction.message?.id);
+        const kickrequest = client.kickRequest.get(interaction.message?.id);
         const banmember = await interaction.guild.members.fetch(banrequest?.userid);
         const warnmember = await interaction.guild.members.fetch(warnrequest?.userid);
+        const kickmember = await interaction.guild.members.fetch(kickrequest?.userid);
+
         const {TextInputBuilder, ActionRowBuilder, TextInputStyle} = require("discord.js");
+
+        // kick
+        if(interaction.customId === "kickdeny"){
+            const modal = new ModalBuilder()
+                .setCustomId('kickmodal')
+                .setTitle('Reason')
+
+
+            const field = new ActionRowBuilder().addComponents(
+                new TextInputBuilder()
+                    .setCustomId("kickfield")
+                    .setLabel("Reason")
+                    .setStyle(TextInputStyle.Short)
+                    .setRequired(true),
+            );
+            modal.addComponents([field]);
+            return await interaction.showModal(modal);
+
+
+        }
+
+        if(interaction.customId === "kickaccept"){
+            const user = kickmember.user
+            const guild = interaction.guild;
+            const reason = kickrequest.reason;
+            await interaction.reply({
+                content: 'Accepted!',
+                ephemeral: true
+            });
+            await interaction.message.delete();
+            const EmbedTitle = "You have been kicked";
+            const EmbedDescription = `__By:__  <@${interaction.member.user.id}> \n __Reason:__ **${reason}** \n*If you want to contest this, please open a ticket.*`;
+            const EmbedColor = "#ff6767";
+
+            let embed = new EmbedBuilder(
+                {
+                    title: EmbedTitle,
+                    description: String(EmbedDescription).substr(0, 2048).split("+n+").join("\n"),
+                    footer: {
+                        text: guild.name,
+                        icon_url: guild.iconURL({ dynamic: true })
+                    }
+                }).setColor(EmbedColor ? EmbedColor : "Blurple")
+
+            user.send({ embeds: [embed] })
+                .catch(() => {
+                    console.log(`❌: Cant send message to <@${kickrequest.member.user.id}> (Probably disable his DM)`);
+                    let embed = new EmbedBuilder()
+                        .setDescription(`<:redcross:1038240381143363585> : Cant send message to <@${kickrequest.member.user.id}> (Probably disable his DM)`)
+                        .setColor('Red')
+                    interaction.editReply({ embeds: [embed], ephemeral: true});
+                })
+
+            await kickmember.kick(reason);
+            console.log(`✅: Successfully kicked ${user.tag} for ${reason}`)
+
+        }
 
         // warn
 

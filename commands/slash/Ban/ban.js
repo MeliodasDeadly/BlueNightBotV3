@@ -66,7 +66,7 @@ module.exports = {
             const { guild } = member;
 
             const EmbedTitle = "You Have been Banned!";
-            const EmbedDescription = "By: " + member.user.tag + "\nReason: **" + reason + "**\nIf you want to get unbaned follow this link : " + config.banlink;
+            const EmbedDescription = `By:  <@${member.user.id}> \nReason: **${reason}**\nIf you want to get unbaned follow this link :  ${config.banlink}`;
             const EmbedColor = "#FF0000";
 
             const StringOption = options.getInteger("deletetime");

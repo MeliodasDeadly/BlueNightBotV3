@@ -5,14 +5,14 @@ const settings = require("../../botconfig/settings.json");
 // import discord guild
 module.exports = {
   name: "clear", //the command name for the Slash Command
-  description: "clear some message", //the command description for Slash Command Overview
+  description: "clear some Message", //the command description for Slash Command Overview
   cooldown: 5,// Number (in seconds) of how long the cooldown for this command should be
   memberpermissions: ["MANAGE_MESSAGES"], //Only allow members with specific Permissions to execute a Commmand [OPTIONAL]
   requiredroles: [], //Only allow specific Users with a Role to execute a Command [OPTIONAL]
   alloweduserids: [], //Only allow specific Users to execute a Command [OPTIONAL]
   options: [ //OPTIONAL OPTIONS, make the array empty / dont add this option if you don't need options!
 	//INFORMATIONS! You can add Options, but mind that the NAME MUST BE LOWERCASED! AND NO SPACES!!!, for the CHOCIES you need to add a array of arrays; [ ["",""] , ["",""] ] 
-		{"Integer": { name: "amount", description: "How many message did you want to clear ?", required: true }}, //to use in the code: interacton.getInteger("ping_amount")
+		{"Integer": { name: "amount", description: "How many Message did you want to clear ?", required: true }}, //to use in the code: interacton.getInteger("ping_amount")
         //{"String": { name: "title", description: "What should be the Embed title?", required: true }}, //to use in the code: interacton.getString("title")
 		//{"String": { name: "description", description: "What should be the Embed Description? [ +n+ = NewLine ]", required: true }}, //to use in the code: interacton.getString("description")
 		//{"String": { name: "color", description: "What should be the Embed Color?", required: false }}, //to use in the code: interacton.getString("color")

@@ -8,7 +8,7 @@ module.exports = {
         {
             type: 10, // NUMBER (0 to X)
             name: "amount",
-            description: "Number of message to be cleared",
+            description: "Number of Message to be cleared",
             required: true
         },
         {

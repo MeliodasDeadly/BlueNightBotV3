@@ -21,6 +21,9 @@ class Tools {
      * @desc Log Action
      * @param {*} interaction discord Interaction
      * @param {string} channelid discord Channel
+     * @param {string} name discord interaction name
+     * @param {string} tag discord user tag
+     * @param {string} avatar discord user avatar
      * @param {string} text discord text
      * @returns Void
      */

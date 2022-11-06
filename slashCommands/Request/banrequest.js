@@ -104,7 +104,7 @@ module.exports = {
         
         /*.catch((err) => {console.log(err)}).then(() => {
 
-        const message = embed;
+        const Message = embed;
 
         console.log(`✅: Embed Send to ${ChannelOption.tag}!`);
         
@@ -118,7 +118,7 @@ module.exports = {
 		const reaction = collected.first();
 
 		if (reaction.emoji.name === '👍') {
-			message.reply('✅: Ban Accepted');
+			Message.reply('✅: Ban Accepted');
             user.send({embeds: [embed2]}).catch((err) => {
                 console.log(`❌: Cant DM ${user.tag} (probably disable his DM)`); 
               }).then(() => {
@@ -136,7 +136,7 @@ module.exports = {
 		}
 	})
 	.catch(collected => {
-		message.reply('You reacted with neither a thumbs up, nor a thumbs down.');
+		Message.reply('You reacted with neither a thumbs up, nor a thumbs down.');
 	});
 
     });
@@ -157,7 +157,7 @@ module.exports = {
                 if (interaction.customId === 'deny') {
                     await interaction.reply({ content: 'Denied!', ephemeral: true });
                     member.send(`Your ban request for ${user.tag} has been denied for ${reason}`).catch((err) => {
-                        console.log(`❌: Cant send message to ${member.user.tag} (Permission missing)`)
+                        console.log(`❌: Cant send Message to ${member.user.tag} (Permission missing)`)
                     })
                 
                 }
