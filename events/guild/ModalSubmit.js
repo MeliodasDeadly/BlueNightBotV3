@@ -9,10 +9,21 @@ module.exports = {
 };
 client.on("interactionCreate", async interaction => {
     if (interaction.isModalSubmit()) {
+        let reaction = await client.db.getData('/request/')
+        reaction = reaction.filter(reaction => reaction.guildId === interaction.guild.id && reaction.messageId === interaction.message.id)
+        const banrequest = reaction.filter(reaction => reaction.guildId === interaction.guild.id && reaction.messageId === interaction.message.id)
+        const warnrequest = reaction.filter(reaction => reaction.guildId === interaction.guild.id && reaction.messageId === interaction.message.id)
+        const kickrequest = reaction.filter(reaction => reaction.guildId === interaction.guild.id && reaction.messageId === interaction.message.id)
+
+        const banmember = await interaction.guild.members.fetch(reaction[0].userId);
+        const warnmember = await interaction.guild.members.fetch(reaction[0].userId);
+        const kickmember = await interaction.guild.members.fetch(reaction[0].userId);
+
+
+
 
         // kick
         if (interaction.customId === "kickmodal") {
-            const kickrequest = client.kickRequest.get(interaction.message?.id);
             await interaction.message.delete();
             const reason = interaction.fields.getTextInputValue("kickfield");
             const EmbedTitle = "Your kick request has been denied";
@@ -28,16 +39,16 @@ client.on("interactionCreate", async interaction => {
                 }
             }).setColor(EmbedColor ? EmbedColor : "Blurple").setTimestamp();
 
-            await kickrequest.member.send({embeds: [embed]}).catch(() => {
-                console.log(`❌: Cant send message to <@${kickrequest.member.user.id}> (Probably disable his DM)`);
+            await kickmember.send({embeds: [embed]}).catch(() => {
+                console.log(`❌: Cant send message to <@${kickrequest.userId}> (Probably disable his DM)`);
                 let embed = new EmbedBuilder()
-                    .setDescription(`<:redcross:1038240381143363585> : Cant send message to <@${kickrequest.member.user.id}> (Probably disable his DM)`)
+                    .setDescription(`<:redcross:1038240381143363585> : Cant send message to <@${kickrequest.userId}> (Probably disable his DM)`)
                     .setColor('Red')
                 interaction.reply({embeds: [embed], ephemeral: true});
 
             })
             interaction.reply({
-                content: `✅: Message sent to : <@${kickrequest.member.user.id}>!`,
+                content: `✅: Message sent to : <@${kickrequest.userId}>!`,
                 ephemeral: true
             });
             console.log(`✅: Embed Send to ${kickrequest.member.user.tag}`);
@@ -47,7 +58,6 @@ client.on("interactionCreate", async interaction => {
         // warn
 
         if (interaction.customId === "warnmodal") {
-            const warnrequest = client.warnRequest.get(interaction.message?.id);
             await interaction.message.delete();
             const reason = interaction.fields.getTextInputValue("warnfield");
             const EmbedTitle = "Your warn request has been denied";
@@ -63,16 +73,16 @@ client.on("interactionCreate", async interaction => {
                 }
             }).setColor(EmbedColor ? EmbedColor : "Blurple").setTimestamp();
 
-            await warnrequest.member.send({embeds: [embed]}).catch(() => {
-                console.log(`❌: Cant send message to <@${banrequest.member.user.id}> (Probably disable his DM)`);
+            await warnmember.send({embeds: [embed]}).catch(() => {
+                console.log(`❌: Cant send message to <@${warnrequest.userId}> (Probably disable his DM)`);
                 let embed = new EmbedBuilder()
-                    .setDescription(`<:redcross:1038240381143363585> : Cant send message to <@${banrequest.member.user.id}> (Probably disable his DM)`)
+                    .setDescription(`<:redcross:1038240381143363585> : Cant send message to <@${warnrequest.userId}> (Probably disable his DM)`)
                     .setColor('Red')
                 interaction.reply({embeds: [embed], ephemeral: true});
 
             })
             interaction.reply({
-                content: `✅: Message sent to : <@${warnrequest.member.user.id}>!`,
+                content: `✅: Message sent to : <@${warnrequest.userId}>!`,
                 ephemeral: true
             });
             console.log(`✅: Embed Send to ${warnrequest.member.user.tag}`);
@@ -84,7 +94,6 @@ client.on("interactionCreate", async interaction => {
 
         if (interaction.customId === "banmodal") {
 
-            const banrequest = client.banRequest.get(interaction.message?.id);
             await interaction.message.delete();
             const reason = interaction.fields.getTextInputValue("banfield");
             const EmbedTitle = "Your ban request has been denied";
@@ -101,16 +110,16 @@ client.on("interactionCreate", async interaction => {
                     }
                 }).setColor(EmbedColor ? EmbedColor : "Blurple").setTimestamp();
 
-            await banrequest.member.send({embeds: [embed]})
+            await banmember.send({embeds: [embed]})
                 .catch(() => {
-                    console.log(`❌: Cant send message to <@${banrequest.member.user.id}> (Probably disable his DM)`);
+                    console.log(`❌: Cant send message to <@${banrequest.userId}> (Probably disable his DM)`);
                     let embed = new EmbedBuilder()
-                        .setDescription(`<:redcross:1038240381143363585> : Cant send message to <@${banrequest.member.user.id}> (Probably disable his DM)`)
+                        .setDescription(`<:redcross:1038240381143363585> : Cant send message to <@${banrequest.userId}> (Probably disable his DM)`)
                         .setColor('Red')
                     interaction.reply({embeds: [embed], ephemeral: true});
                 })
             interaction.reply({
-                content: `✅: Message sent to : <@${banrequest.member.user.id}>!`,
+                content: `✅: Message sent to : <@${banrequest.userId}>!`,
                 ephemeral: true
             });
             console.log(`✅: Embed Send to ${banrequest.member.user.tag}`);

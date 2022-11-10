@@ -83,6 +83,27 @@ module.exports = {
             interaction.reply({content: `Ticket created in ${channel}`, ephemeral: true});
             console.log("✅: Ticket created in " + channel.name);
 
+            let tickets = await client.db.getData('/tickets/');
+            const guildid = interaction.guild.id;
+            const userid = user.id;
+            const message = channel.messages.cache.map(message => message.id)
+            const messagecontent = message.toString().replace(/[]/g, " ");
+
+
+            tickets.push({
+                mode: "tickets",
+                type: "tickets",
+                user: user.tag,
+                userId: userid,
+                memberId: member.user.id,
+                messageId: messagecontent,
+                guildId: guildid,
+                modId: interaction.member.id,
+                time: Math.round(Date.now() / 1000),
+            });
+            await client.db.push('/tickets/',tickets)
+            console.log(`✅: Successfully added ${user.tag} to the database.`)
+
         } catch (e) {
             console.log(String(e.stack).bgRed)
         }

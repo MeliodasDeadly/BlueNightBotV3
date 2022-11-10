@@ -84,19 +84,32 @@ module.exports = {
             await channel.send({
                 embeds: [embed],
                 components: [row]
-            }).then(
-                message => {
-                    client.warnRequest.set(message.id, {
-                        userid: userid,
-                        member,
-                        reason,
-                        force
-                    })
-
-                }
-            ).catch(err => {
+            }).catch(err => {
                 console.log(err)
             })
+            let request = await client.db.getData('/request/');
+            const guildid = interaction.guild.id;
+            const message = channel.messages.cache.map(message => message.id)
+            const messagecontent = message.toString().replace(/[]/g, " ");
+
+
+            request.push({
+                mode: "request",
+                type: "warn",
+                user: user.tag,
+                userId: userid,
+                member: member,
+                memberid: member.user.id,
+                reason: reason,
+                force : force,
+                messageId: messagecontent,
+                guildId: guildid,
+                modId: interaction.member.id,
+                time: Math.round(Date.now() / 1000),
+            });
+            await client.db.push('/request/',request)
+            console.log(`✅: Successfully added ${user.tag} to the database.`)
+
             interaction.reply({content: "✅: Request sent !", ephemeral: true});
             console.log(`✅: Embed Send to ${channel.name}!`);
 
