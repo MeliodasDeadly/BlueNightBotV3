@@ -6,7 +6,7 @@ const Discord = require("discord.js"); //this is the official discord.js wrapper
 module.exports = { 
     name: 'guildMemberAdd'
 };
-client.on("guildMemberAdd", async member => {
+client.on("guildMemberAdd", async interaction => {
     try {
     } catch (e) {
         console.log(String(e.stack).bgRed)

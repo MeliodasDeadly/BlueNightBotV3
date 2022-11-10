@@ -92,7 +92,7 @@ module.exports = {
             let row = new ActionRowBuilder()
                 .addComponents(
                     new SelectMenuBuilder()
-                        .setCustomId(messageid)
+                        .setCustomId('reactionrole')
                         .setPlaceholder('Nothing selected')
                         .addOptions([
                             {
@@ -106,10 +106,8 @@ module.exports = {
                 row = new ActionRowBuilder()
                     .addComponents(
                         new SelectMenuBuilder()
-                            .setCustomId(messageid)
+                            .setCustomId('reactionrole')
                             .setPlaceholder('Nothing selected')
-                            .setMinValues(1)
-                            .setMaxValues(2)
                             .addOptions([
                                 {
                                     label: role.name,
@@ -128,10 +126,8 @@ module.exports = {
                     new ActionRowBuilder()
                         .addComponents(
                             new SelectMenuBuilder()
-                                .setCustomId(messageid)
+                                .setCustomId('reactionrole')
                                 .setPlaceholder('Nothing selected')
-                                .setMinValues(1)
-                                .setMaxValues(3)
                                 .addOptions([
                                     {
                                         label: role.name,
@@ -152,7 +148,8 @@ module.exports = {
             interaction.reply({ content :"✅: Message sent", ephemeral: true });
             // get message sent by the bot
             const message = channel.messages.cache.map(message => message.id)
-
+            // get message content without the []
+            const messagecontent = message.toString().replace(/[]/g, " ");
 
 
             /*let messageid2 = await client.db.getData('/messageid');
@@ -171,7 +168,7 @@ module.exports = {
                 roleId: role.id,
                 roleId2: role2id,
                 roleId3: role3id,
-                messageId: message,
+                messageId: messagecontent,
                 channelID: channel.id,
                 guildID: interaction.guild.id,
                 time: Math.round(Date.now() / 1000),
