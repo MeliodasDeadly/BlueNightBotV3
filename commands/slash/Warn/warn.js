@@ -43,7 +43,7 @@ module.exports = {
                     userId: user.id,
                     reason: reason,
                     guildId: guild,
-                    warnerId: interaction.member.id,
+                    warnerId: interaction.member.user.id,
                     time: Math.round(Date.now() / 1000),
                 });
             await client.db.push('/warns/',warns)

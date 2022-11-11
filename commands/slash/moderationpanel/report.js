@@ -72,6 +72,15 @@ module.exports = {
                         .setStyle(ButtonStyle.Primary)
                         .setEmoji('⚒')
                         .setCustomId('mod'),
+                    new ButtonBuilder()
+                        .setStyle(ButtonStyle.Secondary)
+                        .setLabel('📝')
+                        .setCustomId('ticket'),
+                    new ButtonBuilder()
+                        .setStyle(ButtonStyle.Secondary)
+                        .setLabel('🗑')
+                        .setCustomId('bin'),
+
                 );
 
                     await channel.threads.create({
@@ -89,12 +98,15 @@ module.exports = {
             const guild = interaction.guild.id;
             const message = channel.threads.cache.map(message => message.id)
             const messagecontent = message.toString().replace(/[]/g, " ");
+            const thread = channel.threads.cache.map(thread => thread.id)
+            const threadcontent = thread.toString().replace(/[]/g, " ");
 
             report.push({
                 guildId: guild,
                 memberId: interaction.member.id,
                 userId: user.user.id,
                 messageId: messagecontent,
+                threadId: threadcontent ,
                 time: Math.round(Date.now() / 1000),
             });
             await client.db.push('/report/',report)
