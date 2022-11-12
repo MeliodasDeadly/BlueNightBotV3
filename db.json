@@ -1,139 +1,18 @@
 {
-    "warns": [
-        {
-            "userId": "427213915395719169",
-            "reason": "Troll",
-            "guildId": "968973775129440307",
-            "warnerId": "300589878972907520",
-            "time": 1668183017
-        },
-        {
-            "userId": "427213915395719169",
-            "reason": "Troll",
-            "guildId": "968973775129440307",
-            "warnerId": "300589878972907520",
-            "time": 1668183171
-        }
-    ],
+    "warns": [],
     "selectmenu": [],
-    "report": [
-        {
-            "guildId": "968973775129440307",
-            "memberId": "427213915395719169",
-            "userId": "281718112427048960",
-            "messageId": "1040655758146150521",
-            "threadId": "1040655758146150521",
-            "time": 1668182067
-        }
-    ],
-    "tickets": [
-        {
-            "mode": "tickets",
-            "type": "tickets",
-            "user": "L'unique Méliodas#0101",
-            "userId": "300589878972907520",
-            "memberId": "300589878972907520",
-            "messageId": "1040337766728343622",
-            "guildId": "968973775129440307",
-            "modId": "300589878972907520",
-            "time": 1668106251
-        },
-        {
-            "mode": "tickets",
-            "type": "tickets",
-            "user": "L'unique Méliodas#0101",
-            "userId": "300589878972907520",
-            "memberId": "300589878972907520",
-            "messageId": "1040351560661745706",
-            "guildId": "968973775129440307",
-            "modId": "300589878972907520",
-            "time": 1668109540
-        },
-        {
-            "mode": "tickets",
-            "type": "tickets",
-            "user": "L'unique Méliodas#0101",
-            "userId": "300589878972907520",
-            "memberId": "300589878972907520",
-            "messageId": "1040352499766411304",
-            "guildId": "968973775129440307",
-            "modId": "300589878972907520",
-            "time": 1668109764
-        },
-        {
-            "mode": "tickets",
-            "type": "tickets",
-            "user": "L'unique Méliodas#0101",
-            "userId": "300589878972907520",
-            "memberId": "300589878972907520",
-            "messageId": "1040356849209323590",
-            "guildId": "968973775129440307",
-            "modId": "300589878972907520",
-            "time": 1668110801
-        },
-        {
-            "mode": "tickets",
-            "type": "tickets",
-            "user": "L'unique Méliodas#0101",
-            "userId": "300589878972907520",
-            "memberId": "300589878972907520",
-            "messageId": "1040358843345010709",
-            "guildId": "968973775129440307",
-            "modId": "300589878972907520",
-            "time": 1668111277
-        },
-        {
-            "mode": "tickets",
-            "type": "tickets",
-            "user": "Blue Night#6197",
-            "userId": "1037107442603003935",
-            "memberId": "300589878972907520",
-            "messageId": "1040360520814968972",
-            "guildId": "968973775129440307",
-            "modId": "300589878972907520",
-            "time": 1668111676
-        }
-    ],
-    "request": [
-        {
-            "mode": "request",
-            "type": "request",
-            "user": "L'unique Méliodas#0101",
-            "userId": "x",
-            "memberId": "x",
-            "messageId": "x",
-            "guildId": "968973775129440307",
-            "modId": "x",
-            "time": 1668106251
-        }
-    ],
+    "report": [],
+    "tickets": [],
+    "request": [],
     "reactionid": [
-        {
-            "roleId": "990687995520774176",
-            "roleId2": "none",
-            "roleId3": "none",
-            "messageId": "1040246252736106528",
-            "channelID": "1037799928711356416",
-            "guildID": "968973775129440307",
-            "time": 1668084433
-        },
         {
             "roleId": "990687995520774176",
             "roleId2": "990688122121637922",
             "roleId3": "none",
-            "messageId": "1040248667841507339",
+            "messageId": "1040679266012114974",
             "channelID": "990281453373902899",
             "guildID": "968973775129440307",
-            "time": 1668085009
-        },
-        {
-            "roleId": "990687995520774176",
-            "roleId2": "none",
-            "roleId3": "none",
-            "messageId": "1040252217799757924",
-            "channelID": "990281453373902899",
-            "guildID": "968973775129440307",
-            "time": 1668085856
+            "time": 1668187671
         }
     ],
     "messageid": []

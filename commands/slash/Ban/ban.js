@@ -1,7 +1,4 @@
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
-const { GoogleSpreadsheet } = require('google-spreadsheet');
-const sheetconfig = require('../../../botconfig/sheet.json');
-const bluenight = require('../../../botconfig/bluenight.json');
+const {EmbedBuilder, PermissionsBitField} = require('discord.js');
 
 
 module.exports = {
@@ -51,19 +48,19 @@ module.exports = {
     alloweduserids: [],
     requiredroles: [],
 
-    run: async (client, interaction, config, db) => {
+    run: async (client, interaction, config) => {
 
         try {
 
-            const { member, channelId, guildId, applicationId,
-                commandName, deferred, replied, ephemeral,
-                options, id, createdTimestamp
+            const {
+                member,
+                options,
             } = interaction;
 
             let reason = options.getString("reason");
             let user = options.getMember("user");
 
-            const { guild } = member;
+            const {guild} = member;
 
             const EmbedTitle = "You Have been Banned!";
             const EmbedDescription = `By:  <@${member.user.id}> \nReason: **${reason}**\nIf you want to get unbaned follow this link :  ${config.banlink}`;
@@ -94,52 +91,37 @@ module.exports = {
                     description: String(EmbedDescription).substr(0, 2048).split("+n+").join("\n"),
                     footer: {
                         text: guild.name,
-                        icon_url: guild.iconURL({ dynamic: true })
+                        icon_url: guild.iconURL({dynamic: true})
                     }
                 }
             ).setColor(EmbedColor ? EmbedColor : "Blurple")
 
-            user.send({ embeds: [embed] }).catch((err) => {
+            user.send({embeds: [embed]}).catch(() => {
                 console.log(`❌: Cant DM ${user.user.tag} (probably disable his DM)`);
             })
             console.log(`✅: Embed Send to ${user.user.tag}, now waiting for the ban... `);
-            
 
-            await user.ban({ deleteMessageSeconds: timedelete, reason }).catch((err) => {
+
+            await user.ban({deleteMessageSeconds: timedelete, reason}).catch(() => {
                 console.log(`❌: Cant ban ${user.user.tag} (Permission missing)`)
                 throw `❌: Cant ban ${user.user.tag} (Permission missing)`
             })
-            interaction.reply({ content: `✅: Successfully banned ${user.user.tag} for ${reason}`, ephemeral: true })
-            
+            interaction.reply({content: `✅: Successfully banned ${user.user.tag} for ${reason}`, ephemeral: true})
 
 
-            const doc = new GoogleSpreadsheet(sheetconfig.Sheetid);
+            console.log(`✅: Successfully added ${user.user.tag} to the Google Sheet!`);
+        } catch (e) {
+            console.log(String(e.stack).bgRed)
+            return interaction.reply({content: e, ephemeral: true})
+        }
 
-            await doc.useServiceAccountAuth({
-                client_email: bluenight.client_email,
-                private_key: bluenight.private_key,
-            });
-            await doc.loadInfo();
-            const sheet = doc.sheetsByIndex[0];
-            await sheet.addRow({
+        /*
                 'User': user.user.tag,
                 'UserID': user.user.id,
                 'Reason': reason,
                 'Date': new Date().toLocaleString(),
                 'Moderator': member.user.tag,
-                'ModeratorID': member.id,
-            }).catch((err) => {
-
-                    console.log(`❌: Error when adding ${user.user.tag} to the Google Sheet!`)
-                    return console.log(String(err.stack).bgRed)
-
-                })
-                console.log(`✅: Successfully added ${user.user.tag} to the Google Sheet!`);
-        } catch (e) {
-            console.log(String(e.stack).bgRed)
-            return interaction.reply({ content: e , ephemeral: true })
-        }
-
+                'ModeratorID': member.id,*/
         // execute
     },
 };
